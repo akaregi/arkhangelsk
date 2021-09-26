@@ -1,20 +1,34 @@
-import { Client, Intents } from 'discord.js'
 import { config } from 'dotenv'
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
+import { getClient } from './boot/client'
+import { getCommands } from './boot/command'
 
+// Loads .env
 config()
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client?.user?.tag}!`)
-})
+async function main () {
+  // Spawns a new client
+  const client = getClient()
 
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isCommand()) return
+  // Gets available commands
+  const commands = await getCommands()
 
-  if (interaction.commandName === 'ping') {
-    await interaction.reply('Pong!')
-  }
-})
+  // Event handling
+  client.on('ready', () => {
+    console.log(`Logged in as ${client?.user?.tag}!`)
+  })
 
-client.login(process.env['TOKEN'] ?? '')
+  client.on('interactionCreate', async interaction => {
+    if (!interaction.isCommand()) return
+
+    const command = commands.get(interaction.commandName)
+
+    if (!command) return
+
+    command.execute(interaction)
+  })
+
+  client.login(process.env['TOKEN'] ?? '')
+}
+
+main()

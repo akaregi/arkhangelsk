@@ -1,6 +1,6 @@
-import { Commands } from './util/Command'
+import { Command } from './util/Command'
 
-export const commands: Commands = [
+export const commands: Command[] = [
   {
     name: 'ping',
     description: 'Replies with Pong!'
