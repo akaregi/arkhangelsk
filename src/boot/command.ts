@@ -1,9 +1,10 @@
+import { join } from 'path'
 import { Collection } from 'discord.js'
 import { readdir } from 'fs/promises'
 import { Command } from '../commands/Command'
 
 export async function getCommands (): Promise<Collection<string, Command>> {
-  const commandFiles = (await readdir('./app/commands'))
+  const commandFiles = (await readdir(join(__dirname, '../commands')))
     .filter(file => file.endsWith('.ts'))
     .map(file => file.slice(0, -3))
     .map(file => require(process.cwd() + '/app/commands/' + file))
