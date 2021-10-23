@@ -25,7 +25,8 @@
     "utf-8-validate": "^5.0.6"
   },
   "scripts": {
-    "start": "ts-node ./app/app.ts",
+    "start": "ts-node ./src/app.ts",
+    "build": "tsc",
     "initialize": "ts-node ./init/init.ts"
   }
 }
