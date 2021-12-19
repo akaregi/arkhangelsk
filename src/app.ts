@@ -1,32 +1,17 @@
 import { config } from 'dotenv'
 
 import { getClient } from './boot/client'
-import { getCommands } from './boot/command'
-
-// Loads .env
-config()
+import { eventList } from './events/eventList'
 
 async function main () {
-  // Spawns a new client
+  // dotenv
+  config()
+
   const client = getClient()
 
-  // Gets available commands
-  const commands = await getCommands()
-
-  // Event handling
-  client.on('ready', () => {
-    console.log(`Logged in as ${client?.user?.tag}!`)
-  })
-
-  client.on('interactionCreate', async interaction => {
-    if (!interaction.isCommand()) return
-
-    const command = commands.get(interaction.commandName)
-
-    if (!command) return
-
-    command.execute(interaction)
-  })
+  for (const [state, func] of Object.entries(eventList)) {
+    client.on(state, func)
+  }
 
   client.login(process.env['TOKEN'] ?? '')
 }
