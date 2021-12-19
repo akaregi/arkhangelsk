@@ -1,5 +1,10 @@
+/// <reference types="../@types/discord" />
 import { Client, Intents } from 'discord.js'
+import { getCommands } from './command'
 
-export function getClient (): Client<boolean> {
-  return new Client({ intents: [Intents.FLAGS.GUILDS] })
+export async function getClient (): Promise<Client<boolean>> {
+  const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
+  client.commands = await getCommands()
+
+  return client
 }

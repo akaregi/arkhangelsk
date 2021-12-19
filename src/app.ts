@@ -7,7 +7,7 @@ async function main () {
   // dotenv
   config()
 
-  const client = getClient()
+  const client = await getClient()
 
   for (const [state, func] of Object.entries(eventList)) {
     client.on(state, func)

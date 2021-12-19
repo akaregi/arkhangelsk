@@ -1,4 +1,4 @@
-import { EventList } from './interfaces/Event'
+import { EventList } from '../interfaces/Event'
 import { interactionCreate } from './interactionCreate'
 import { ready } from './ready'
 
